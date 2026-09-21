@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
 
 <head>
@@ -22,31 +22,31 @@
 <body>
 
   <div class="sidebar">
-    <div class="sidebar-header">🏫 SisKeu Admin</div>
+    <div class="sidebar-header">ðŸ« SisKeu Admin</div>
     <ul class="sidebar-menu">
       <div class="menu-label">Transaksi</div>
-      <li class="nav-item active" data-target="transaksi-siswa"><a href="#">👨‍🎓 Transaksi Siswa</a></li>
-      <li class="nav-item" data-target="tabungan-siswa"><a href="#">💰 Tabungan Siswa</a></li>
-      <li class="nav-item" data-target="transaksi-internal"><a href="#">🔄 Transaksi Internal</a></li>
+      <li class="nav-item active" data-target="transaksi-siswa"><a href="#">ðŸ‘¨â€ðŸŽ“ Transaksi Siswa</a></li>
+      <li class="nav-item" data-target="tabungan-siswa"><a href="#">ðŸ’° Saldo Siswa</a></li>
+      <li class="nav-item" data-target="transaksi-internal"><a href="#">ðŸ”„ Transaksi Internal</a></li>
 
       <div class="menu-label">Pengaturan Pembayaran</div>
-      <li class="nav-item" data-target="jenis-pembayaran"><a href="#">⚙️ Jenis & Tarif</a></li>
+      <li class="nav-item" data-target="jenis-pembayaran"><a href="#">âš™ï¸ Jenis & Tarif</a></li>
 
       <div class="menu-label">Pengaturan Sistem</div>
-      <li class="nav-item" data-target="manajemen-akun"><a href="#">🔑 Manajemen Akun</a></li>
+      <li class="nav-item" data-target="manajemen-akun"><a href="#">ðŸ”‘ Manajemen Akun</a></li>
 
       <div class="menu-label">Laporan</div>
-      <li class="nav-item" data-target="laporan-total"><a href="#">📊 Total Keuangan</a></li>
+      <li class="nav-item" data-target="laporan-total"><a href="#">ðŸ“Š Total Keuangan</a></li>
     </ul>
     <div class="sidebar-footer">
-      <button class="btn-logout" onclick="logout()">🚪 Keluar</button>
+      <button class="btn-logout" onclick="logout()">ðŸšª Keluar</button>
     </div>
   </div>
 
   <div class="main-content">
     <div class="header-top">
       <div style="display: flex; align-items: center; gap: 15px;">
-        <button id="menuToggle" class="btn-menu">☰</button>
+        <button id="menuToggle" class="btn-menu">â˜°</button>
         <h1 id="pageTitle">Transaksi Siswa</h1>
       </div>
       <div>
@@ -62,14 +62,14 @@
         <div class="section-header">
           <h3>Data Transaksi Siswa</h3>
           <div class="section-header-actions">
-            <button class="btn-add" style="background-color:#0dcaf0; color:#000;" onclick="openModal('modal-import-ts')">📥 Impor CSV</button>
+            <button class="btn-add" style="background-color:#0dcaf0; color:#000;" onclick="openModal('modal-import-ts')">ðŸ“¥ Impor CSV</button>
             <button class="btn-add" onclick="openAddTsModal()">+ Tambah Transaksi</button>
           </div>
         </div>
 
         <div class="toolbar">
         <input type="text" class="search-input" id="search-ts"
-          placeholder="🔍 Cari nama siswa, NISN, kelas, atau jenis pembayaran..." oninput="renderTransaksiSiswa()">
+          placeholder="ðŸ” Cari nama siswa, NISN, kelas, atau jenis pembayaran..." oninput="renderTransaksiSiswa()">
         <input type="date" class="date-input" id="from-ts" onchange="renderTransaksiSiswa()">
         <input type="date" class="date-input" id="to-ts" onchange="renderTransaksiSiswa()">
         <button class="btn-clear-filter" onclick="clearFilter('ts')">Reset Filter</button>
@@ -100,7 +100,7 @@
     </div>
 
     <!-- ========================================== -->
-    <!-- TAB TABUNGAN SISWA                         -->
+    <!-- TAB Saldo Siswa                         -->
     <!-- ========================================== -->
     <div id="tabungan-siswa" class="page-section" style="display: none;">
       <div class="info-cards" style="margin-bottom: 15px;">
@@ -111,13 +111,13 @@
       </div>
       <div class="card-section">
         <div class="section-header">
-          <h3>Data Tabungan Siswa</h3>
+          <h3>Data Saldo Siswa</h3>
           <div class="section-header-actions">
             <button class="btn-add" onclick="openModal('modal-tabungan-siswa')">+ Tambah Transaksi</button>
           </div>
         </div>
         <div class="toolbar">
-          <input type="text" class="search-input" id="search-tabungan" placeholder="🔍 Cari nama siswa, NISN, atau kelas..." oninput="renderTabunganAdmin()">
+          <input type="text" class="search-input" id="search-tabungan" placeholder="ðŸ” Cari nama siswa, NISN, atau kelas..." oninput="renderTabunganAdmin()">
           <select class="filter-select" id="jenis-tabungan" onchange="renderTabunganAdmin()">
             <option value="">Semua Jenis</option>
             <option value="Setor">Setor</option>
@@ -161,12 +161,12 @@
         <div class="section-header">
           <h3>Data Transaksi Internal</h3>
           <div class="section-header-actions">
-            <button class="btn-add" style="background-color:#0dcaf0; color:#000;" onclick="openModal('modal-import-ti')">📥 Impor CSV</button>
+            <button class="btn-add" style="background-color:#0dcaf0; color:#000;" onclick="openModal('modal-import-ti')">ðŸ“¥ Impor CSV</button>
             <button class="btn-add" onclick="openModal('modal-transaksi-internal')">+ Tambah Transaksi</button>
           </div>
         </div>
         <div class="toolbar">
-          <input type="text" class="search-input" id="search-ti" placeholder="🔍 Cari keterangan..."
+          <input type="text" class="search-input" id="search-ti" placeholder="ðŸ” Cari keterangan..."
             oninput="renderTransaksiInternal()">
           <select class="filter-select" id="jenis-ti" onchange="renderTransaksiInternal()">
             <option value="">Semua Jenis</option>
@@ -209,12 +209,12 @@
         <div class="section-header">
           <h3>Pengaturan Tarif Pembayaran</h3>
           <div class="section-header-actions">
-            <button class="btn-add" style="background-color:#0dcaf0; color:#000;" onclick="openModal('modal-import-tp')">📥 Impor CSV</button>
+            <button class="btn-add" style="background-color:#0dcaf0; color:#000;" onclick="openModal('modal-import-tp')">ðŸ“¥ Impor CSV</button>
             <button class="btn-add" onclick="openModal('modal-jenis-pembayaran')">+ Tambah Tarif</button>
           </div>
         </div>
         <div class="toolbar">
-          <input type="text" class="search-input" id="search-tp" placeholder="🔍 Cari nama pembayaran atau kelas..."
+          <input type="text" class="search-input" id="search-tp" placeholder="ðŸ” Cari nama pembayaran atau kelas..."
             oninput="renderTarifPembayaran()">
           <button class="btn-clear-filter" onclick="clearFilter('tp')">Reset Filter</button>
         </div>
@@ -252,7 +252,7 @@
           </div>
         </div>
         <div class="toolbar">
-          <input type="text" class="search-input" id="search-akun" placeholder="🔍 Cari ID Login atau nama..."
+          <input type="text" class="search-input" id="search-akun" placeholder="ðŸ” Cari ID Login atau nama..."
             oninput="renderAkun()">
           <select class="filter-select" id="role-akun" onchange="renderAkun()">
             <option value="">Semua Role</option>
@@ -308,8 +308,8 @@
         <div class="section-header">
           <h3>Laporan Transaksi per Periode</h3>
           <div class="section-header-actions">
-            <button class="btn-export" onclick="exportLaporanExcel()">📊 Export Excel</button>
-            <button class="btn-export" onclick="exportLaporanPDF()">📄 Export PDF</button>
+            <button class="btn-export" onclick="exportLaporanExcel()">ðŸ“Š Export Excel</button>
+            <button class="btn-export" onclick="exportLaporanPDF()">ðŸ“„ Export PDF</button>
           </div>
         </div>
         <div class="toolbar">
@@ -588,7 +588,7 @@
           <label id="akun_password_label">Password</label>
           <div class="password-wrapper">
             <input type="password" id="akun_password" placeholder="Masukkan password" autocomplete="new-password">
-            <span class="toggle-password" onclick="togglePasswordVisibility('akun_password', this)">👁️</span>
+            <span class="toggle-password" onclick="togglePasswordVisibility('akun_password', this)">ðŸ‘ï¸</span>
           </div>
           <div class="field-hint" id="akun_password_hint" style="display:none;">Kosongkan bila tidak ingin mengubah
             password.</div>

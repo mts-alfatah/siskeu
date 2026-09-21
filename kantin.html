@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E-Kantin - MTs Al-Fatah</title>
+
+  <!-- Tab Icon Browser -->
+  <link rel="icon" href="mts.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="mts.ico" type="image/x-icon">
+
+  <!-- Tag PWA -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0d6efd">
+  <link rel="apple-touch-icon" href="logo-192.png">
+
+  <!-- External Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Special Styles for Kantin Scanner */
+    .scanner-box {
+      background: #f8f9fa;
+      border: 2px dashed #0d6efd;
+      border-radius: 12px;
+      padding: 30px 20px;
+      text-align: center;
+      margin-bottom: 25px;
+      cursor: text;
+    }
+    .scanner-box h3 {
+      margin-top: 0;
+      color: #0d6efd;
+      margin-bottom: 10px;
+    }
+    #qrInput {
+      width: 100%;
+      max-width: 400px;
+      padding: 12px 15px;
+      font-size: 18px;
+      text-align: center;
+      border: 1px solid #ced4da;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+    #qrInput:focus {
+      outline: none;
+      border-color: #0d6efd;
+      box-shadow: 0 0 0 3px rgba(13,110,253,.25);
+    }
+    
+    .student-info-card {
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 25px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      display: none; /* Hidden by default */
+    }
+    .student-info-card h4 { margin-top: 0; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px;}
+    .info-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 15px; }
+    .info-row .label { color: #666; }
+    .info-row .value { font-weight: bold; color: #333; }
+    .info-row .value.saldo { color: #198754; font-size: 18px; }
+    
+    .checkout-form { margin-top: 20px; border-top: 1px dashed #ccc; padding-top: 20px; }
+    .checkout-form label { display: block; margin-bottom: 8px; font-weight: bold; color: #444; }
+    .checkout-form input { width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 6px; font-size: 16px; }
+    .checkout-form button { width: 100%; padding: 12px; font-size: 16px; font-weight: bold; }
+  </style>
+</head>
+
+<body>
+  <!-- Topbar (Mobile Friendly) -->
+  <div class="topbar-mobile" style="display: none;">
+    <div class="brand">🍔 E-Kantin</div>
+    <button class="btn-logout" onclick="logout()">Logout</button>
+  </div>
+
+  <div class="main-content" style="margin-left: 0; padding-top: 30px; max-width: 800px; margin: 0 auto; display: block;">
+    <div class="header-section" style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+      <div>
+        <h1 id="pageTitleKantin" style="margin: 0; font-size: 24px;">Dashboard Kantin</h1>
+        <p class="subtitle" id="kantinNameLabel" style="margin: 5px 0 0 0; color: #666;">Memuat profil...</p>
+      </div>
+      <button class="btn-primary" onclick="logout()" style="background:#dc3545; border-color:#dc3545;">Keluar</button>
+    </div>
+
+    <!-- Scanner Section -->
+    <div class="scanner-box" onclick="document.getElementById('qrInput').focus()">
+      <h3>📸 Scan Kartu Pelajar</h3>
+      <p style="color: gray; font-size: 14px; margin-bottom: 15px;">Arahkan kursor ke kotak di bawah lalu scan barcode/QR code kartu.</p>
+      <input type="text" id="qrInput" placeholder="Hasil Scan (Otomatis...)" autocomplete="off" autofocus>
+      <div id="scanMessage" style="font-size: 14px; margin-top: 5px; height: 20px; color: #dc3545;"></div>
+    </div>
+
+    <!-- Checkout Section (Shows after successful scan) -->
+    <div class="student-info-card" id="checkoutSection">
+      <h4>Data Siswa & Pembayaran</h4>
+      <div class="info-row">
+        <span class="label">Nama:</span>
+        <span class="value" id="co_nama">-</span>
+      </div>
+      <div class="info-row">
+        <span class="label">NISN:</span>
+        <span class="value" id="co_nisn">-</span>
+      </div>
+      <div class="info-row">
+        <span class="label">Kelas:</span>
+        <span class="value" id="co_kelas">-</span>
+      </div>
+      <div class="info-row">
+        <span class="label">Sisa Saldo:</span>
+        <span class="value saldo" id="co_saldo">Rp0</span>
+      </div>
+      
+      <div class="checkout-form">
+        <form id="form-jajan">
+          <input type="hidden" id="co_nisn_val">
+          <input type="hidden" id="co_nama_val">
+          <input type="hidden" id="co_kelas_val">
+          <input type="hidden" id="co_max_saldo">
+
+          <label>Total Belanja (Rp)</label>
+          <input type="number" id="co_nominal" placeholder="Contoh: 5000" required min="500">
+          <p id="co_error" style="color:red; font-size:13px; display:none; margin-top:-10px; margin-bottom:15px;">Saldo tidak mencukupi!</p>
+
+          <div style="display: flex; gap: 10px;">
+            <button type="button" class="btn-secondary" onclick="resetScanner()" style="flex: 1;">Batal</button>
+            <button type="submit" id="btn-bayar" class="btn-primary" style="flex: 2; background: #198754; border-color: #198754;">💰 Bayar Transaksi</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Riwayat Transaksi Kantin -->
+    <div class="card">
+      <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 15px;">
+        <h3 class="card-title" style="margin: 0;">Riwayat Jajan Hari Ini</h3>
+        <button class="btn-icon" onclick="loadRiwayatKantin()" style="padding: 5px 10px;">🔄 Refresh</button>
+      </div>
+      
+      <div class="table-responsive">
+        <table class="table" style="width: 100%; border-collapse: collapse;">
+          <thead>
+            <tr style="background: #f8f9fa; text-align: left;">
+              <th style="padding: 10px; border-bottom: 2px solid #dee2e6;">Waktu</th>
+              <th style="padding: 10px; border-bottom: 2px solid #dee2e6;">Siswa</th>
+              <th style="padding: 10px; border-bottom: 2px solid #dee2e6;">Nominal</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-kantin-riwayat">
+            <tr><td colspan="3" style="text-align: center; padding: 15px;">Memuat data...</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="pagination" id="pg-kantin-riwayat" style="margin-top: 15px;"></div>
+      <div class="pagination-info" id="count-kantin-riwayat" style="font-size: 13px; color: gray; margin-top: 5px;"></div>
+    </div>
+  </div>
+
+  <!-- External Script -->
+  <script src="script.js"></script>
+</body>
+</html>

@@ -113,6 +113,11 @@ function selectRole(roleName, element) {
     inputUser.placeholder = 'Masukan NISN';
     groupPass.style.display = 'block';
     inputPass.required = true;
+  } else if (roleName === 'Kantin') {
+    labelUser.textContent = 'ID Kantin';
+    inputUser.placeholder = 'Masukan ID Kantin';
+    groupPass.style.display = 'block';
+    inputPass.required = true;
   }
 }
 
@@ -199,6 +204,7 @@ if (loginForm) {
             if (roleLower === 'admin') window.location.href = 'dashboard.html';
             else if (roleLower === 'walikelas') window.location.href = 'walikelas.html';
             else if (roleLower === 'siswa') window.location.href = 'siswa.html';
+            else if (roleLower === 'kantin') window.location.href = 'kantin.html';
             else {
               messageDiv.style.color = '#dc3545';
               messageDiv.textContent = 'Role tidak dikenali: ' + data.user.role;
@@ -243,7 +249,7 @@ function logout() {
 // Mencegah user kembali ke halaman dashboard setelah logout menggunakan tombol Back di browser (Bfcache)
 window.addEventListener('pageshow', function (event) {
   const path = window.location.pathname.toLowerCase();
-  const isProtectedPage = path.includes('dashboard.html') || path.includes('walikelas.html') || path.includes('siswa.html');
+  const isProtectedPage = path.includes('dashboard.html') || path.includes('walikelas.html') || path.includes('siswa.html') || path.includes('kantin.html');
   
   if (isProtectedPage && !localStorage.getItem('userSession')) {
     window.location.replace('index.html');
@@ -369,7 +375,7 @@ function renderPagination(totalItems, limit, currentPage, containerId, onPageCha
   
   const btnPrev = document.createElement('button');
   btnPrev.className = 'btn-page';
-  btnPrev.textContent = '« Prev';
+  btnPrev.textContent = 'Â« Prev';
   btnPrev.disabled = currentPage === 1;
   btnPrev.onclick = () => onPageChange(currentPage - 1);
   container.appendChild(btnPrev);
@@ -390,7 +396,7 @@ function renderPagination(totalItems, limit, currentPage, containerId, onPageCha
 
   const btnNext = document.createElement('button');
   btnNext.className = 'btn-page';
-  btnNext.textContent = 'Next »';
+  btnNext.textContent = 'Next Â»';
   btnNext.disabled = currentPage === totalPages;
   btnNext.onclick = () => onPageChange(currentPage + 1);
   container.appendChild(btnNext);
@@ -402,7 +408,7 @@ function renderPagination(totalItems, limit, currentPage, containerId, onPageCha
 function loadTransaksiSiswa() {
   const tbody = document.getElementById('tbody-transaksi-siswa');
   if (!tbody) return;
-  tbody.innerHTML = '<tr><td colspan="7" style="text-align: center;">⏳ Memuat data...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="7" style="text-align: center;">â³ Memuat data...</td></tr>';
   fetch(scriptURL + '?t=' + new Date().getTime() + '&action=getTransaksiSiswa')
     .then(r => r.json())
     .then(res => { rawTs = (res.status === 'success') ? res.data : []; renderTransaksiSiswa(); })
@@ -439,8 +445,8 @@ function renderTransaksiSiswa(resetPage = true) {
         <td>${escapeHtml(r.admin) || '-'}</td>
         <td>
           <div class="row-actions">
-            <button class="btn-icon btn-edit" onclick="editTransaksiSiswa(${r.sheetRow})">✏️ Edit</button>
-            <button class="btn-icon btn-delete" onclick="deleteTransaksiSiswa(${r.sheetRow})">🗑️ Hapus</button>
+            <button class="btn-icon btn-edit" onclick="editTransaksiSiswa(${r.sheetRow})">âœï¸ Edit</button>
+            <button class="btn-icon btn-delete" onclick="deleteTransaksiSiswa(${r.sheetRow})">ðŸ—‘ï¸ Hapus</button>
           </div>
         </td>
       </tr>
@@ -611,7 +617,7 @@ function deleteTransaksiSiswa(sheetRow) {
 function loadTransaksiInternal() {
   const tbody = document.getElementById('tbody-transaksi-internal');
   if (!tbody) return;
-  tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">⏳ Memuat data...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">â³ Memuat data...</td></tr>';
   fetch(scriptURL + '?t=' + new Date().getTime() + '&action=getTransaksiInternal')
     .then(r => r.json())
     .then(res => { rawTi = (res.status === 'success') ? res.data : []; renderTransaksiInternal(); })
@@ -651,8 +657,8 @@ function renderTransaksiInternal(resetPage = true) {
           <td>${escapeHtml(r.admin) || '-'}</td>
           <td>
             <div class="row-actions">
-              <button class="btn-icon btn-edit" onclick="editTransaksiInternal(${r.sheetRow})">✏️ Edit</button>
-              <button class="btn-icon btn-delete" onclick="deleteTransaksiInternal(${r.sheetRow})">🗑️ Hapus</button>
+              <button class="btn-icon btn-edit" onclick="editTransaksiInternal(${r.sheetRow})">âœï¸ Edit</button>
+              <button class="btn-icon btn-delete" onclick="deleteTransaksiInternal(${r.sheetRow})">ðŸ—‘ï¸ Hapus</button>
             </div>
           </td>
         </tr>`;
@@ -687,7 +693,7 @@ function deleteTransaksiInternal(sheetRow) {
 function loadTarifPembayaran() {
   const tbody = document.getElementById('tbody-tarif-pembayaran');
   if (!tbody) return;
-  tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">⏳ Memuat data...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">â³ Memuat data...</td></tr>';
   fetch(scriptURL + '?t=' + new Date().getTime() + '&action=getTarifPembayaran')
     .then(r => r.json())
     .then(res => { rawTp = (res.status === 'success') ? res.data : []; renderTarifPembayaran(); })
@@ -716,8 +722,8 @@ function renderTarifPembayaran(resetPage = true) {
         <td style="font-weight:bold;">${formatRp(r.nominalTarif)}</td>
         <td>
           <div class="row-actions">
-            <button class="btn-icon btn-edit" onclick="editTarifPembayaran(${r.sheetRow})">✏️ Edit</button>
-            <button class="btn-icon btn-delete" onclick="deleteTarifPembayaran(${r.sheetRow})">🗑️ Hapus</button>
+            <button class="btn-icon btn-edit" onclick="editTarifPembayaran(${r.sheetRow})">âœï¸ Edit</button>
+            <button class="btn-icon btn-delete" onclick="deleteTarifPembayaran(${r.sheetRow})">ðŸ—‘ï¸ Hapus</button>
           </div>
         </td>
       </tr>`).join('');
@@ -751,7 +757,7 @@ function deleteTarifPembayaran(sheetRow) {
 function loadAkun() {
   const tbody = document.getElementById('tbody-akun');
   if (!tbody) return;
-  tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">⏳ Memuat data...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">â³ Memuat data...</td></tr>';
   fetch(scriptURL + '?t=' + new Date().getTime() + '&action=getAccounts')
     .then(r => r.json())
     .then(res => { rawAkun = (res.status === 'success') ? res.data : []; renderAkun(); })
@@ -786,8 +792,8 @@ function renderAkun(resetPage = true) {
         <td>${escapeHtml(r.kelas) || '-'}</td>
         <td>
           <div class="row-actions">
-            <button class="btn-icon btn-edit" onclick="editAkun(${r.sheetRow})">✏️ Edit</button>
-            <button class="btn-icon btn-delete" onclick="deleteAkun(${r.sheetRow})">🗑️ Hapus</button>
+            <button class="btn-icon btn-edit" onclick="editAkun(${r.sheetRow})">âœï¸ Edit</button>
+            <button class="btn-icon btn-delete" onclick="deleteAkun(${r.sheetRow})">ðŸ—‘ï¸ Hapus</button>
           </div>
         </td>
       </tr>`).join('');
@@ -1568,7 +1574,7 @@ function loadTagihanWalikelas() {
   const kelas = session.kelas;
   const tbody = document.getElementById('tbody-wk-tagihan');
   if (!tbody) return;
-  tbody.innerHTML = '<tr><td colspan="7" style="text-align: center;">⏳ Memuat data...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="7" style="text-align: center;">â³ Memuat data...</td></tr>';
 
   Promise.all([
     fetch(scriptURL + '?t=' + new Date().getTime() + '&action=getAccounts').then(r => r.json()),
@@ -1661,7 +1667,7 @@ function loadLaporanWalikelas() {
   const kelas = session.kelas;
   const tbody = document.getElementById('tbody-wk-laporan');
   if (!tbody) return;
-  tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">⏳ Memuat data...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">â³ Memuat data...</td></tr>';
 
   fetch(scriptURL + '?t=' + new Date().getTime() + '&action=getTransaksiSiswa')
     .then(r => r.json())
@@ -1750,7 +1756,7 @@ function loadTagihanSiswa() {
   const session = JSON.parse(localStorage.getItem('userSession')) || {};
   const tbody = document.getElementById('tbody-siswa-tagihan');
   if (!tbody) return;
-  tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">⏳ Memuat data...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">â³ Memuat data...</td></tr>';
 
   Promise.all([
     fetch(scriptURL + '?t=' + new Date().getTime() + '&action=getAccounts').then(r => r.json()),
@@ -1846,7 +1852,7 @@ function loadRiwayatSiswa() {
   const session = JSON.parse(localStorage.getItem('userSession')) || {};
   const tbody = document.getElementById('tbody-siswa-riwayat');
   if (!tbody) return;
-  tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">⏳ Memuat data...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">â³ Memuat data...</td></tr>';
 
   Promise.all([
     fetch(scriptURL + '?t=' + new Date().getTime() + '&action=getAccounts').then(r => r.json()),
@@ -1929,7 +1935,7 @@ function togglePasswordVisibility(inputId, iconElement) {
 }
 
 // ===================================================
-// TABUNGAN DIGITAL SISWA (ADMIN)
+// Saldo Digital Siswa (ADMIN)
 // ===================================================
 let rawTabungan = [], filteredTabungan = [];
 let pageTabungan = 1;
@@ -1937,7 +1943,7 @@ let pageTabungan = 1;
 function loadTabunganAdmin() {
   const tbody = document.getElementById('tbody-tabungan-siswa');
   if (!tbody) return;
-  tbody.innerHTML = '<tr><td colspan="8" style="text-align: center;">⏳ Memuat data...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="8" style="text-align: center;">â³ Memuat data...</td></tr>';
   fetch(scriptURL + '?t=' + new Date().getTime() + '&action=getTabungan')
     .then(r => r.json())
     .then(res => { 
@@ -1990,7 +1996,7 @@ function renderTabunganAdmin(resetPage = true) {
           <td>${escapeHtml(r.admin) || '-'}</td>
           <td>
             <div class="row-actions">
-              <button class="btn-icon btn-delete" onclick="deleteTabungan(${r.sheetRow})">🗑️ Hapus</button>
+              <button class="btn-icon btn-delete" onclick="deleteTabungan(${r.sheetRow})">ðŸ—‘ï¸ Hapus</button>
             </div>
           </td>
         </tr>
@@ -2105,7 +2111,7 @@ document.getElementById('form-tabungan')?.addEventListener('submit', function (e
 });
 
 // ===================================================
-// TABUNGAN DIGITAL SISWA (WALI KELAS)
+// Saldo Digital Siswa (WALI KELAS)
 // ===================================================
 let rawTabunganWk = [], filteredTabunganWk = [];
 let pageWkTabungan = 1;
@@ -2115,7 +2121,7 @@ function loadTabunganWalikelas() {
   const kelas = session.kelas;
   const tbody = document.getElementById('tbody-wk-tabungan');
   if (!tbody) return;
-  tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">⏳ Memuat data...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">â³ Memuat data...</td></tr>';
   
   const labelKelas = document.getElementById('label-kelas-tabungan');
   if (labelKelas) labelKelas.textContent = kelas;
@@ -2182,7 +2188,7 @@ function renderTabunganWalikelas(resetPage = true) {
 }
 
 // ===================================================
-// TABUNGAN DIGITAL SISWA (SISWA PORTAL)
+// Saldo Digital Siswa (SISWA PORTAL)
 // ===================================================
 let rawTabunganSiswa = [], filteredTabunganSiswa = [];
 let pageSiswaTabungan = 1;
@@ -2191,7 +2197,7 @@ function loadTabunganSiswa() {
   const session = JSON.parse(localStorage.getItem('userSession')) || {};
   const tbody = document.getElementById('tbody-siswa-tabungan');
   if (!tbody) return;
-  tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">⏳ Memuat data...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">â³ Memuat data...</td></tr>';
   
   const labelNama = document.getElementById('label-nama-tabungan');
   if (labelNama) labelNama.textContent = session.nama;
@@ -2258,5 +2264,265 @@ function renderTabunganSiswa(resetPage = true) {
     }).join('');
   } else {
     tbody.innerHTML = '<tr><td colspan="5" class="empty-state">Tidak ada transaksi.</td></tr>';
+  }
+}
+
+// ===================================================
+// E-KANTIN DASHBOARD
+// ===================================================
+let kantinDataSiswa = [];
+let rawRiwayatKantin = [], filteredRiwayatKantin = [];
+let pageKantinRiwayat = 1;
+let currentScannedSiswa = null;
+
+const qrInput = document.getElementById('qrInput');
+if (qrInput) {
+  // Initialize Kantin Dashboard
+  const session = JSON.parse(localStorage.getItem('userSession'));
+  if (!session || String(session.role || '').trim().toLowerCase() !== 'kantin') {
+    alert('Sesi habis atau akses ditolak.');
+    window.location.href = 'index.html';
+  } else {
+    document.getElementById('kantinNameLabel').textContent = `Petugas: ${session.nama}`;
+    loadDataKantin();
+    loadRiwayatKantin();
+  }
+
+  // Barcode Scanner Listener
+  qrInput.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleQRScan(this.value.trim().toLowerCase());
+      this.value = '';
+    }
+  });
+
+  // Handle Form Pembayaran
+  document.getElementById('form-jajan')?.addEventListener('submit', function(e) {
+    e.preventDefault();
+    processJajanKantin();
+  });
+  
+  // Realtime Nominal Validation
+  document.getElementById('co_nominal')?.addEventListener('input', function() {
+    const nom = parseFloat(this.value) || 0;
+    const max = parseFloat(document.getElementById('co_max_saldo').value) || 0;
+    const err = document.getElementById('co_error');
+    const btn = document.getElementById('btn-bayar');
+    
+    if (nom > max) {
+      err.style.display = 'block';
+      btn.disabled = true;
+    } else {
+      err.style.display = 'none';
+      btn.disabled = false;
+    }
+  });
+}
+
+function loadDataKantin() {
+  const msg = document.getElementById('scanMessage');
+  msg.textContent = 'Memuat database siswa...';
+  fetch(scriptURL + '?t=' + new Date().getTime() + '&action=getAccounts')
+    .then(r => r.json())
+    .then(res => {
+      if (res.status === 'success') {
+        kantinDataSiswa = res.data.filter(a => String(a.role).toLowerCase() === 'siswa');
+        msg.textContent = 'Siap menerima scan.';
+        msg.style.color = '#198754';
+      } else {
+        msg.textContent = 'Gagal memuat data siswa.';
+      }
+    }).catch(() => { msg.textContent = 'Koneksi error.'; });
+}
+
+function handleQRScan(qrText) {
+  const msg = document.getElementById('scanMessage');
+  msg.style.color = '#dc3545';
+  
+  if (!qrText) {
+    msg.textContent = 'Barcode kosong.';
+    return;
+  }
+
+  // Format: nama-nisn (budi-12345)
+  const parts = qrText.split('-');
+  if (parts.length < 2) {
+    msg.textContent = 'Format QR tidak dikenali: ' + qrText;
+    return;
+  }
+  
+  const nisnScanned = parts[parts.length - 1]; // Assume the last part is NISN
+  const siswa = kantinDataSiswa.find(s => String(s.idLogin).toLowerCase() === nisnScanned);
+  
+  if (!siswa) {
+    msg.textContent = 'Siswa dengan NISN ' + nisnScanned + ' tidak terdaftar.';
+    return;
+  }
+
+  msg.style.color = '#0d6efd';
+  msg.textContent = 'Mengecek saldo ' + escapeHtml(siswa.nama) + '...';
+  
+  // Fetch latest saldo
+  fetch(scriptURL + '?t=' + new Date().getTime() + '&action=getTabungan')
+    .then(r => r.json())
+    .then(res => {
+      if (res.status !== 'success') {
+        msg.style.color = '#dc3545';
+        msg.textContent = 'Gagal mengecek saldo.';
+        return;
+      }
+      const listTbg = res.data.filter(t => String(t.nisn).trim() === String(siswa.idLogin).trim());
+      let saldo = 0;
+      listTbg.forEach(r => {
+        if (r.jenis === 'Setor') saldo += parseFloat(r.nominal);
+        else if (r.jenis === 'Tarik') saldo -= parseFloat(r.nominal);
+      });
+      
+      showCheckoutForm(siswa, saldo);
+      msg.textContent = 'Scan berhasil.';
+      msg.style.color = '#198754';
+      setTimeout(() => { msg.textContent = ''; }, 2000);
+    })
+    .catch(() => {
+      msg.style.color = '#dc3545';
+      msg.textContent = 'Koneksi gagal saat mengecek saldo.';
+    });
+}
+
+function showCheckoutForm(siswa, saldo) {
+  currentScannedSiswa = siswa;
+  document.getElementById('checkoutSection').style.display = 'block';
+  document.getElementById('co_nama').textContent = siswa.nama;
+  document.getElementById('co_nisn').textContent = siswa.idLogin;
+  document.getElementById('co_kelas').textContent = siswa.kelas || '-';
+  document.getElementById('co_saldo').textContent = formatRp(saldo);
+  
+  document.getElementById('co_nisn_val').value = siswa.idLogin;
+  document.getElementById('co_nama_val').value = siswa.nama;
+  document.getElementById('co_kelas_val').value = siswa.kelas || '';
+  document.getElementById('co_max_saldo').value = saldo;
+  
+  document.getElementById('co_nominal').value = '';
+  document.getElementById('co_error').style.display = 'none';
+  document.getElementById('btn-bayar').disabled = false;
+  
+  document.getElementById('co_nominal').focus();
+}
+
+function resetScanner() {
+  document.getElementById('checkoutSection').style.display = 'none';
+  currentScannedSiswa = null;
+  const qri = document.getElementById('qrInput');
+  if (qri) {
+    qri.value = '';
+    qri.focus();
+  }
+}
+
+function processJajanKantin() {
+  const nominal = parseFloat(document.getElementById('co_nominal').value) || 0;
+  const maxSaldo = parseFloat(document.getElementById('co_max_saldo').value) || 0;
+  
+  if (nominal < 500) return alert('Minimal jajan Rp500');
+  if (nominal > maxSaldo) return alert('Saldo tidak mencukupi!');
+
+  const btn = document.getElementById('btn-bayar');
+  btn.disabled = true;
+  btn.textContent = 'Memproses...';
+  
+  const session = JSON.parse(localStorage.getItem('userSession'));
+  
+  const payload = {
+    action: 'addTabungan',
+    nisn: document.getElementById('co_nisn_val').value,
+    namaSiswa: document.getElementById('co_nama_val').value,
+    kelas: document.getElementById('co_kelas_val').value,
+    jenis: 'Tarik',
+    nominal: nominal,
+    keterangan: 'E-Kantin',
+    admin: session.nama
+  };
+
+  fetch(scriptURL, {
+    method: 'POST',
+    body: JSON.stringify(payload),
+    redirect: 'follow'
+  })
+    .then(r => r.json())
+    .then(res => {
+      btn.disabled = false;
+      btn.textContent = '💰 Bayar Transaksi';
+      if (res.status === 'success') {
+        resetScanner();
+        loadRiwayatKantin();
+        const msg = document.getElementById('scanMessage');
+        msg.style.color = '#198754';
+        msg.textContent = 'Pembayaran Rp' + nominal + ' sukses!';
+        setTimeout(() => { msg.textContent = 'Siap menerima scan.'; }, 3000);
+      } else {
+        alert('Gagal: ' + res.message);
+      }
+    })
+    .catch(err => {
+      btn.disabled = false;
+      btn.textContent = '💰 Bayar Transaksi';
+      alert('Error: ' + err.message);
+    });
+}
+
+function loadRiwayatKantin() {
+  const tbody = document.getElementById('tbody-kantin-riwayat');
+  if (!tbody) return;
+  tbody.innerHTML = '<tr><td colspan="3" style="text-align: center;">⏳ Memuat riwayat...</td></tr>';
+  
+  const session = JSON.parse(localStorage.getItem('userSession'));
+  
+  fetch(scriptURL + '?t=' + new Date().getTime() + '&action=getTabungan')
+    .then(r => r.json())
+    .then(res => {
+      if (res.status === 'success') {
+        const d = new Date();
+        const today = String(d.getDate()).padStart(2, '0') + '/' + String(d.getMonth() + 1).padStart(2, '0') + '/' + d.getFullYear();
+        
+        rawRiwayatKantin = res.data.filter(t => 
+          t.jenis === 'Tarik' && 
+          String(t.keterangan).toLowerCase() === 'e-kantin' &&
+          String(t.admin) === String(session.nama) &&
+          String(t.tanggal).startsWith(today)
+        );
+        rawRiwayatKantin.reverse();
+        renderRiwayatKantin();
+      }
+    })
+    .catch(() => { tbody.innerHTML = '<tr><td colspan="3" class="empty-state">Gagal memuat.</td></tr>'; });
+}
+
+function renderRiwayatKantin(resetPage = true) {
+  if (resetPage === true) pageKantinRiwayat = 1;
+  const tbody = document.getElementById('tbody-kantin-riwayat');
+  if (!tbody) return;
+
+  const start = (pageKantinRiwayat - 1) * PAGE_LIMIT;
+  const paginated = rawRiwayatKantin.slice(start, start + PAGE_LIMIT);
+  const end = Math.min(start + PAGE_LIMIT, rawRiwayatKantin.length);
+
+  const countElem = document.getElementById('count-kantin-riwayat');
+  if(countElem) countElem.textContent = `Menampilkan ${rawRiwayatKantin.length > 0 ? start + 1 : 0}-${end} dari ${rawRiwayatKantin.length} transaksi`;
+  renderPagination(rawRiwayatKantin.length, PAGE_LIMIT, pageKantinRiwayat, 'pg-kantin-riwayat', (p) => { pageKantinRiwayat = p; renderRiwayatKantin(false); });
+
+  if (paginated.length > 0) {
+    tbody.innerHTML = paginated.map(r => {
+      const wkt = String(r.tanggal).split(' ')[1] || r.tanggal;
+      return `
+        <tr>
+          <td style="font-size:13px; color:gray;">${escapeHtml(wkt)}</td>
+          <td><strong>${escapeHtml(r.nama)}</strong></td>
+          <td style="color:red; font-weight:bold;">${formatRp(r.nominal)}</td>
+        </tr>
+      `;
+    }).join('');
+  } else {
+    tbody.innerHTML = '<tr><td colspan="3" class="empty-state">Belum ada transaksi hari ini.</td></tr>';
   }
 }
