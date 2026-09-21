@@ -253,7 +253,7 @@ function logout() {
 // Mencegah user kembali ke halaman dashboard setelah logout menggunakan tombol Back di browser (Bfcache)
 window.addEventListener('pageshow', function (event) {
   const path = window.location.pathname.toLowerCase();
-  const isProtectedPage = path.includes('dashboard.html') || path.includes('walikelas.html') || path.includes('siswa.html') || path.includes('kantin.html');
+  const isProtectedPage = path.includes('dashboard.html') || path.includes('walikelas.html') || path.includes('siswa.html') || (path.includes('kantin.html') && !path.includes('index-kantin.html'));
   
   if (isProtectedPage && !localStorage.getItem('userSession')) {
     if (path.includes('kantin.html')) {
