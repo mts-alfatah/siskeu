@@ -416,7 +416,7 @@ function renderPagination(totalItems, limit, currentPage, containerId, onPageCha
 function loadTransaksiSiswa() {
   const tbody = document.getElementById('tbody-transaksi-siswa');
   if (!tbody) return;
-  tbody.innerHTML = '<tr><td colspan="7" style="text-align: center;">Ã¢ÂÂ³ Memuat data...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="7" style="text-align: center;">⏳ Memuat data...</td></tr>';
   fetch(scriptURL + '?t=' + new Date().getTime() + '&action=getTransaksiSiswa')
     .then(r => r.json())
     .then(res => { rawTs = (res.status === 'success') ? res.data : []; renderTransaksiSiswa(); })
@@ -625,7 +625,7 @@ function deleteTransaksiSiswa(sheetRow) {
 function loadTransaksiInternal() {
   const tbody = document.getElementById('tbody-transaksi-internal');
   if (!tbody) return;
-  tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">Ã¢ÂÂ³ Memuat data...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">⏳ Memuat data...</td></tr>';
   fetch(scriptURL + '?t=' + new Date().getTime() + '&action=getTransaksiInternal')
     .then(r => r.json())
     .then(res => { rawTi = (res.status === 'success') ? res.data : []; renderTransaksiInternal(); })
@@ -701,7 +701,7 @@ function deleteTransaksiInternal(sheetRow) {
 function loadTarifPembayaran() {
   const tbody = document.getElementById('tbody-tarif-pembayaran');
   if (!tbody) return;
-  tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">Ã¢ÂÂ³ Memuat data...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">⏳ Memuat data...</td></tr>';
   fetch(scriptURL + '?t=' + new Date().getTime() + '&action=getTarifPembayaran')
     .then(r => r.json())
     .then(res => { rawTp = (res.status === 'success') ? res.data : []; renderTarifPembayaran(); })
@@ -765,7 +765,7 @@ function deleteTarifPembayaran(sheetRow) {
 function loadAkun() {
   const tbody = document.getElementById('tbody-akun');
   if (!tbody) return;
-  tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">Ã¢ÂÂ³ Memuat data...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">⏳ Memuat data...</td></tr>';
   fetch(scriptURL + '?t=' + new Date().getTime() + '&action=getAccounts')
     .then(r => r.json())
     .then(res => { rawAkun = (res.status === 'success') ? res.data : []; renderAkun(); })
@@ -1582,7 +1582,7 @@ function loadTagihanWalikelas() {
   const kelas = session.kelas;
   const tbody = document.getElementById('tbody-wk-tagihan');
   if (!tbody) return;
-  tbody.innerHTML = '<tr><td colspan="7" style="text-align: center;">Ã¢ÂÂ³ Memuat data...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="7" style="text-align: center;">⏳ Memuat data...</td></tr>';
 
   Promise.all([
     fetch(scriptURL + '?t=' + new Date().getTime() + '&action=getAccounts').then(r => r.json()),
@@ -1675,7 +1675,7 @@ function loadLaporanWalikelas() {
   const kelas = session.kelas;
   const tbody = document.getElementById('tbody-wk-laporan');
   if (!tbody) return;
-  tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">Ã¢ÂÂ³ Memuat data...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">⏳ Memuat data...</td></tr>';
 
   fetch(scriptURL + '?t=' + new Date().getTime() + '&action=getTransaksiSiswa')
     .then(r => r.json())
@@ -1764,7 +1764,7 @@ function loadTagihanSiswa() {
   const session = JSON.parse(localStorage.getItem('userSession')) || {};
   const tbody = document.getElementById('tbody-siswa-tagihan');
   if (!tbody) return;
-  tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">Ã¢ÂÂ³ Memuat data...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">⏳ Memuat data...</td></tr>';
 
   Promise.all([
     fetch(scriptURL + '?t=' + new Date().getTime() + '&action=getAccounts').then(r => r.json()),
@@ -1860,7 +1860,7 @@ function loadRiwayatSiswa() {
   const session = JSON.parse(localStorage.getItem('userSession')) || {};
   const tbody = document.getElementById('tbody-siswa-riwayat');
   if (!tbody) return;
-  tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">Ã¢ÂÂ³ Memuat data...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">⏳ Memuat data...</td></tr>';
 
   Promise.all([
     fetch(scriptURL + '?t=' + new Date().getTime() + '&action=getAccounts').then(r => r.json()),
@@ -1951,7 +1951,7 @@ let pageTabungan = 1;
 function loadTabunganAdmin() {
   const tbody = document.getElementById('tbody-tabungan-siswa');
   if (!tbody) return;
-  tbody.innerHTML = '<tr><td colspan="8" style="text-align: center;">Ã¢ÂÂ³ Memuat data...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="8" style="text-align: center;">⏳ Memuat data...</td></tr>';
   fetch(scriptURL + '?t=' + new Date().getTime() + '&action=getTabungan')
     .then(r => r.json())
     .then(res => { 
@@ -2129,7 +2129,7 @@ function loadTabunganWalikelas() {
   const kelas = session.kelas;
   const tbody = document.getElementById('tbody-wk-tabungan');
   if (!tbody) return;
-  tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">Ã¢ÂÂ³ Memuat data...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">⏳ Memuat data...</td></tr>';
   
   const labelKelas = document.getElementById('label-kelas-tabungan');
   if (labelKelas) labelKelas.textContent = kelas;
@@ -2205,7 +2205,7 @@ function loadTabunganSiswa() {
   const session = JSON.parse(localStorage.getItem('userSession')) || {};
   const tbody = document.getElementById('tbody-siswa-tabungan');
   if (!tbody) return;
-  tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">Ã¢ÂÂ³ Memuat data...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">⏳ Memuat data...</td></tr>';
   
   const labelNama = document.getElementById('label-nama-tabungan');
   if (labelNama) labelNama.textContent = session.nama;
