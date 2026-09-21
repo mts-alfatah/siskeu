@@ -24,31 +24,16 @@
     
     <div class="brand-header">
       <img src="logo.png" alt="Logo Sekolah" class="logo-img" id="schoolLogo">
-      <h2>SisKeu MTs Al-Fatah</h2>
-      <p class="subtitle">Silakan pilih akses masuk Anda</p>
-    </div>
-
-    <div class="role-grid">
-      <div class="role-card active" onclick="selectRole('Admin', this)">
-        <div class="role-icon">🛡️</div>
-        <div class="role-title">Admin</div>
-      </div>
-      <div class="role-card" onclick="selectRole('Walikelas', this)">
-        <div class="role-icon">👨‍🏫</div>
-        <div class="role-title">Wali Kelas</div>
-      </div>
-      <div class="role-card" onclick="selectRole('Siswa', this)">
-        <div class="role-icon">🎓</div>
-        <div class="role-title">Siswa</div>
-      </div>
+      <h2>E-Kantin MTs Al-Fatah</h2>
+      <p class="subtitle">Silakan login sebagai Penjaga Kantin</p>
     </div>
 
     <form id="loginForm">
-      <input type="hidden" id="selectedRole" value="Admin">
+      <input type="hidden" id="selectedRole" value="Kantin">
 
       <div class="form-group">
-        <label id="labelUsername" for="username">Username / ID Admin</label>
-        <input type="text" id="username" placeholder="Masukkan ID Admin" required autocomplete="off">
+        <label id="labelUsername" for="username">ID Kantin</label>
+        <input type="text" id="username" placeholder="Masukkan ID Kantin" required autocomplete="off">
       </div>
 
       <div class="form-group" id="groupPassword">

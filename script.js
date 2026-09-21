@@ -243,7 +243,11 @@ if (pageTitleElem) {
 
 function logout() {
   localStorage.removeItem('userSession');
-  window.location.replace('index.html');
+  if (window.location.pathname.toLowerCase().includes('kantin.html')) {
+    window.location.replace('index-kantin.html');
+  } else {
+    window.location.replace('index.html');
+  }
 }
 
 // Mencegah user kembali ke halaman dashboard setelah logout menggunakan tombol Back di browser (Bfcache)
@@ -252,7 +256,11 @@ window.addEventListener('pageshow', function (event) {
   const isProtectedPage = path.includes('dashboard.html') || path.includes('walikelas.html') || path.includes('siswa.html') || path.includes('kantin.html');
   
   if (isProtectedPage && !localStorage.getItem('userSession')) {
-    window.location.replace('index.html');
+    if (path.includes('kantin.html')) {
+      window.location.replace('index-kantin.html');
+    } else {
+      window.location.replace('index.html');
+    }
   }
 });
 
@@ -2281,7 +2289,7 @@ if (qrInput) {
   const session = JSON.parse(localStorage.getItem('userSession'));
   if (!session || String(session.role || '').trim().toLowerCase() !== 'kantin') {
     alert('Sesi habis atau akses ditolak.');
-    window.location.href = 'index.html';
+    window.location.href = 'index-kantin.html';
   } else {
     document.getElementById('kantinNameLabel').textContent = `Petugas: ${session.nama}`;
     loadDataKantin();
