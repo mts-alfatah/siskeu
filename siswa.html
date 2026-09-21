@@ -24,6 +24,7 @@
     <ul class="sidebar-menu">
       <div class="menu-label">Menu Saya</div>
       <li class="nav-item-siswa active" data-target="tagihan-siswa"><a href="#">📋 Tagihan Saya</a></li>
+      <li class="nav-item-siswa" data-target="tabungan-saya"><a href="#">💰 Tabungan Saya</a></li>
       <li class="nav-item-siswa" data-target="riwayat-siswa"><a href="#">📊 Riwayat Pembayaran</a></li>
     </ul>
     <div class="sidebar-footer">
@@ -71,6 +72,56 @@
         </table>
       </div>
       <div class="pagination-controls" id="pg-siswa-tagihan"></div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB TABUNGAN SAYA                          -->
+    <!-- ========================================== -->
+    <div id="tabungan-saya" class="tab-content-siswa" style="display: none;">
+      <div class="info-cards" style="margin-bottom: 15px;">
+        <div class="info-card success" style="flex: 1;">
+          <h3>Saldo Tabungan Saat Ini</h3>
+          <div class="number" id="siswa-saldo-tabungan">Rp 0</div>
+        </div>
+      </div>
+      
+      <div class="card-section">
+        <div class="section-header">
+          <h3>Riwayat Tabungan - <span id="label-nama-tabungan" style="color:#0d6efd;"></span></h3>
+        </div>
+        
+        <div class="toolbar">
+          <select class="filter-select" id="jenis-siswa-tabungan" onchange="renderTabunganSiswa()">
+            <option value="">Semua Jenis</option>
+            <option value="Setor">Setor</option>
+            <option value="Tarik">Tarik</option>
+          </select>
+          <label style="font-size:13px; font-weight:600; margin:0;">Dari</label>
+          <input type="date" class="date-input" id="from-siswa-tabungan" onchange="renderTabunganSiswa()">
+          <label style="font-size:13px; font-weight:600; margin:0;">Sampai</label>
+          <input type="date" class="date-input" id="to-siswa-tabungan" onchange="renderTabunganSiswa()">
+        </div>
+
+        <div class="result-count" id="count-siswa-tabungan"></div>
+
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Tanggal</th>
+                <th>Jenis</th>
+                <th>Nominal</th>
+                <th>Keterangan</th>
+                <th>Admin</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-siswa-tabungan">
+              <tr><td colspan="5" style="text-align: center;">Memuat data...</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="pagination-controls" id="pg-siswa-tabungan"></div>
+      </div>
     </div>
 
     <!-- ========================================== -->

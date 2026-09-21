@@ -26,6 +26,7 @@
     <ul class="sidebar-menu">
       <div class="menu-label">Transaksi</div>
       <li class="nav-item active" data-target="transaksi-siswa"><a href="#">👨‍🎓 Transaksi Siswa</a></li>
+      <li class="nav-item" data-target="tabungan-siswa"><a href="#">💰 Tabungan Siswa</a></li>
       <li class="nav-item" data-target="transaksi-internal"><a href="#">🔄 Transaksi Internal</a></li>
 
       <div class="menu-label">Pengaturan Pembayaran</div>
@@ -95,6 +96,60 @@
         </table>
       </div>
       <div class="pagination-controls" id="pg-ts"></div>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB TABUNGAN SISWA                         -->
+    <!-- ========================================== -->
+    <div id="tabungan-siswa" class="page-section" style="display: none;">
+      <div class="info-cards" style="margin-bottom: 15px;">
+        <div class="info-card success">
+          <h3>Total Saldo Tabungan (Semua Siswa)</h3>
+          <div class="number" id="total-saldo-tabungan">Rp 0</div>
+        </div>
+      </div>
+      <div class="card-section">
+        <div class="section-header">
+          <h3>Data Tabungan Siswa</h3>
+          <div class="section-header-actions">
+            <button class="btn-add" onclick="openModal('modal-tabungan-siswa')">+ Tambah Transaksi</button>
+          </div>
+        </div>
+        <div class="toolbar">
+          <input type="text" class="search-input" id="search-tabungan" placeholder="🔍 Cari nama siswa, NISN, atau kelas..." oninput="renderTabunganAdmin()">
+          <select class="filter-select" id="jenis-tabungan" onchange="renderTabunganAdmin()">
+            <option value="">Semua Jenis</option>
+            <option value="Setor">Setor</option>
+            <option value="Tarik">Tarik</option>
+          </select>
+          <input type="date" class="date-input" id="from-tabungan" onchange="renderTabunganAdmin()">
+          <input type="date" class="date-input" id="to-tabungan" onchange="renderTabunganAdmin()">
+          <button class="btn-clear-filter" onclick="clearFilter('tabungan')">Reset Filter</button>
+        </div>
+        <div class="result-count" id="count-tabungan"></div>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Tanggal</th>
+                <th>Siswa</th>
+                <th>Kelas</th>
+                <th>Jenis</th>
+                <th>Nominal</th>
+                <th>Keterangan</th>
+                <th>Admin</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-tabungan-siswa">
+              <tr>
+                <td colspan="8" style="text-align: center;">Memuat data...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="pagination-controls" id="pg-tabungan"></div>
       </div>
     </div>
 
@@ -362,6 +417,40 @@
         <div class="modal-actions">
           <button type="button" class="btn-cancel" onclick="closeModal('modal-transaksi-siswa')">Batal</button>
           <button type="submit" class="btn-save" id="btn-ts">Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal" id="modal-tabungan-siswa">
+    <div class="modal-content">
+      <h3 id="modal-tbg-title">Input Transaksi Tabungan</h3>
+      <form id="form-tabungan">
+        <div class="form-group">
+          <label>Cari / Pilih Siswa (NISN - Nama)</label>
+          <input type="text" id="tbg_searchSiswa" placeholder="Ketik Nama atau NISN untuk mencari..." autocomplete="off" style="margin-bottom: 8px;">
+          <select id="tbg_siswaSelect" required>
+            <option value="">-- Pilih Siswa --</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Jenis Transaksi</label>
+          <select id="tbg_jenis" required>
+            <option value="Setor">Setor (Menambah Saldo)</option>
+            <option value="Tarik">Tarik (Mengurangi Saldo)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Nominal (Rp)</label>
+          <input type="number" id="tbg_nominal" required placeholder="Contoh: 50000">
+        </div>
+        <div class="form-group">
+          <label>Keterangan</label>
+          <input type="text" id="tbg_keterangan" placeholder="Contoh: Setoran awal / Jajan kantin">
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn-cancel" onclick="closeModal('modal-tabungan-siswa')">Batal</button>
+          <button type="submit" class="btn-save" id="btn-tbg">Simpan</button>
         </div>
       </form>
     </div>

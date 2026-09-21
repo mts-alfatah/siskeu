@@ -266,6 +266,7 @@ function clearFilter(prefix) {
   if (prefix === 'tp') renderTarifPembayaran();
   if (prefix === 'akun') renderAkun();
   if (prefix === 'laporan') renderLaporan();
+  if (prefix === 'tabungan') renderTabunganAdmin();
 }
 
 function openModal(id) { document.getElementById(id)?.classList.add('active'); }
@@ -314,6 +315,7 @@ navItems.forEach(item => {
 
 function loadDataForSection(sectionId) {
   if (sectionId === 'transaksi-siswa') loadTransaksiSiswa();
+  if (sectionId === 'tabungan-siswa') loadTabunganAdmin();
   if (sectionId === 'transaksi-internal') loadTransaksiInternal();
   if (sectionId === 'jenis-pembayaran') loadTarifPembayaran();
   if (sectionId === 'manajemen-akun') loadAkun();
@@ -1528,6 +1530,7 @@ navItemsWk.forEach(item => {
     }
     if (pageTitleWkElem) pageTitleWkElem.textContent = this.textContent.replace(/[^a-zA-Z0-9 &]/g, '').trim();
     if (targetId === 'tagihan-kelas') loadTagihanWalikelas();
+    if (targetId === 'tabungan-kelas') loadTabunganWalikelas();
     if (targetId === 'laporan-kelas') loadLaporanWalikelas();
   });
 });
@@ -1710,6 +1713,7 @@ navItemsSiswa.forEach(item => {
     }
     if (pageTitleSiswaElem) pageTitleSiswaElem.textContent = this.textContent.replace(/[^a-zA-Z0-9 &]/g, '').trim();
     if (targetId === 'tagihan-siswa') loadTagihanSiswa();
+    if (targetId === 'tabungan-saya') loadTabunganSiswa();
     if (targetId === 'riwayat-siswa') loadRiwayatSiswa();
   });
 });
@@ -1894,5 +1898,338 @@ function togglePasswordVisibility(inputId, iconElement) {
       input.type = 'password';
       iconElement.textContent = '👁️';
     }
+  }
+}
+
+// ===================================================
+// TABUNGAN DIGITAL SISWA (ADMIN)
+// ===================================================
+let rawTabungan = [], filteredTabungan = [];
+let pageTabungan = 1;
+
+function loadTabunganAdmin() {
+  const tbody = document.getElementById('tbody-tabungan-siswa');
+  if (!tbody) return;
+  tbody.innerHTML = '<tr><td colspan="8" style="text-align: center;">⏳ Memuat data...</td></tr>';
+  fetch(scriptURL + '?t=' + new Date().getTime() + '&action=getTabungan')
+    .then(r => r.json())
+    .then(res => { 
+      rawTabungan = (res.status === 'success') ? res.data : []; 
+      renderTabunganAdmin(); 
+    })
+    .catch(() => { tbody.innerHTML = '<tr><td colspan="8" class="empty-state">Gagal memuat data.</td></tr>'; });
+}
+
+function renderTabunganAdmin(resetPage = true) {
+  if (resetPage === true) pageTabungan = 1;
+  const tbody = document.getElementById('tbody-tabungan-siswa');
+  if (!tbody) return;
+  const q = (document.getElementById('search-tabungan')?.value || '').toLowerCase().trim();
+  const jenisFilter = document.getElementById('jenis-tabungan')?.value;
+
+  filteredTabungan = rawTabungan.filter(r => {
+    const matchesSearch = !q || [r.nama, r.nisn, r.kelas].some(v => String(v || '').toLowerCase().includes(q));
+    const matchesJenis = !jenisFilter || r.jenis === jenisFilter;
+    const matchesDate = inDateRange(r.tanggal, 'from-tabungan', 'to-tabungan');
+    return matchesSearch && matchesJenis && matchesDate;
+  });
+
+  let totalSaldo = 0;
+  rawTabungan.forEach(r => {
+    if (r.jenis === 'Setor') totalSaldo += parseFloat(r.nominal);
+    else if (r.jenis === 'Tarik') totalSaldo -= parseFloat(r.nominal);
+  });
+  const saldoElem = document.getElementById('total-saldo-tabungan');
+  if (saldoElem) saldoElem.textContent = formatRp(totalSaldo);
+
+  const start = (pageTabungan - 1) * PAGE_LIMIT;
+  const paginated = filteredTabungan.slice(start, start + PAGE_LIMIT);
+  const end = Math.min(start + PAGE_LIMIT, filteredTabungan.length);
+
+  document.getElementById('count-tabungan').textContent = `Menampilkan ${filteredTabungan.length > 0 ? start + 1 : 0}-${end} dari ${filteredTabungan.length} transaksi`;
+  renderPagination(filteredTabungan.length, PAGE_LIMIT, pageTabungan, 'pg-tabungan', (p) => { pageTabungan = p; renderTabunganAdmin(false); });
+
+  if (paginated.length > 0) {
+    tbody.innerHTML = paginated.map(r => {
+      let badge = r.jenis === 'Setor' ? '<span style="color:green;font-weight:bold;">Setor</span>' : '<span style="color:red;font-weight:bold;">Tarik</span>';
+      return `
+        <tr>
+          <td>${escapeHtml(r.tanggal)}</td>
+          <td><strong>${escapeHtml(r.nama)}</strong><br><small style="color:gray;">${escapeHtml(r.nisn)}</small></td>
+          <td><span style="padding:2px 6px; border-radius:4px; font-size:12px; background:#e2e3e5; font-weight:bold;">${escapeHtml(r.kelas || '-')}</span></td>
+          <td>${badge}</td>
+          <td style="font-weight:bold;">${formatRp(r.nominal)}</td>
+          <td>${escapeHtml(r.keterangan || '-')}</td>
+          <td>${escapeHtml(r.admin) || '-'}</td>
+          <td>
+            <div class="row-actions">
+              <button class="btn-icon btn-delete" onclick="deleteTabungan(${r.sheetRow})">🗑️ Hapus</button>
+            </div>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  } else {
+    tbody.innerHTML = '<tr><td colspan="8" class="empty-state">Tidak ada data yang cocok.</td></tr>';
+  }
+}
+
+function deleteTabungan(sheetRow) {
+  if (!confirm('Apakah Anda yakin ingin menghapus transaksi tabungan ini?')) return;
+  fetch(scriptURL, { method: 'POST', body: JSON.stringify({ action: 'deleteTabungan', sheetRow: sheetRow }) })
+    .then(r => r.json())
+    .then(res => { alert(res.message || 'Transaksi berhasil dihapus.'); loadTabunganAdmin(); })
+    .catch(err => alert('Gagal menghapus: ' + err.message));
+}
+
+let tbgModalSiswaList = [];
+function openAddTabunganModal() {
+  fetch(scriptURL + '?t=' + new Date().getTime() + '&action=getAccounts')
+    .then(r => r.json())
+    .then(res => {
+      if (res.status === 'success') tbgModalSiswaList = res.data.filter(a => String(a.role).toLowerCase() === 'siswa');
+      
+      const selectSiswa = document.getElementById('tbg_siswaSelect');
+      selectSiswa.innerHTML = '<option value="">-- Pilih Siswa --</option>' +
+        tbgModalSiswaList.map(s => `<option value="${escapeHtml(s.idLogin)}|${escapeHtml(s.nama)}|${escapeHtml(s.kelas)}">${escapeHtml(s.idLogin)} - ${escapeHtml(s.nama)} (Kelas ${escapeHtml(s.kelas)})</option>`).join('');
+
+      const searchSiswa = document.getElementById('tbg_searchSiswa');
+      if (searchSiswa) searchSiswa.value = '';
+      
+      document.getElementById('form-tabungan').reset();
+      openModal('modal-tabungan-siswa');
+    }).catch(err => alert('Gagal memuat data siswa: ' + err.message));
+}
+
+document.getElementById('tbg_searchSiswa')?.addEventListener('input', function () {
+  const keyword = this.value.toLowerCase().trim();
+  const selectSiswa = document.getElementById('tbg_siswaSelect');
+  
+  if (!keyword) {
+    selectSiswa.innerHTML = '<option value="">-- Pilih Siswa --</option>' +
+      tbgModalSiswaList.map(s => `<option value="${escapeHtml(s.idLogin)}|${escapeHtml(s.nama)}|${escapeHtml(s.kelas)}">${escapeHtml(s.idLogin)} - ${escapeHtml(s.nama)} (Kelas ${escapeHtml(s.kelas)})</option>`).join('');
+    selectSiswa.selectedIndex = 0;
+    return;
+  }
+  const filteredSiswa = tbgModalSiswaList.filter(s => 
+    String(s.nama).toLowerCase().includes(keyword) || 
+    String(s.idLogin).toLowerCase().includes(keyword)
+  );
+  selectSiswa.innerHTML = '<option value="">-- Pilih Siswa --</option>' +
+    filteredSiswa.map(s => `<option value="${escapeHtml(s.idLogin)}|${escapeHtml(s.nama)}|${escapeHtml(s.kelas)}">${escapeHtml(s.idLogin)} - ${escapeHtml(s.nama)} (Kelas ${escapeHtml(s.kelas)})</option>`).join('');
+  const exactMatch = filteredSiswa.find(s => String(s.idLogin).toLowerCase() === keyword || String(s.nama).toLowerCase() === keyword);
+  if (exactMatch) {
+    selectSiswa.value = `${exactMatch.idLogin}|${exactMatch.nama}|${exactMatch.kelas}`;
+  } else if (filteredSiswa.length === 1) {
+    selectSiswa.selectedIndex = 1;
+  } else {
+    selectSiswa.selectedIndex = 0;
+  }
+});
+
+document.getElementById('form-tabungan')?.addEventListener('submit', function (e) {
+  e.preventDefault();
+  const btn = document.getElementById('btn-tbg');
+  btn.disabled = true;
+  btn.textContent = 'Menyimpan...';
+
+  const siswaVal = document.getElementById('tbg_siswaSelect').value;
+  if (!siswaVal) {
+    alert('Pilih siswa terlebih dahulu.');
+    btn.disabled = false;
+    btn.textContent = 'Simpan';
+    return;
+  }
+  const parts = siswaVal.split('|');
+  const session = JSON.parse(localStorage.getItem('userSession'));
+  
+  const payload = {
+    action: 'addTabungan',
+    nisn: parts[0],
+    namaSiswa: parts[1],
+    kelas: parts[2] || '',
+    jenis: document.getElementById('tbg_jenis').value,
+    nominal: document.getElementById('tbg_nominal').value,
+    keterangan: document.getElementById('tbg_keterangan').value,
+    admin: session.nama
+  };
+
+  fetch(scriptURL, {
+    method: 'POST',
+    body: JSON.stringify(payload),
+    redirect: 'follow'
+  })
+    .then(r => r.json())
+    .then(res => {
+      btn.disabled = false;
+      btn.textContent = 'Simpan';
+      if (res.status === 'success') {
+        alert('Berhasil: ' + res.message);
+        closeModal('modal-tabungan-siswa');
+        loadTabunganAdmin();
+      } else {
+        alert('Error: ' + res.message);
+      }
+    }).catch(err => {
+      btn.disabled = false;
+      btn.textContent = 'Simpan';
+      alert('Gagal: ' + err.message);
+    });
+});
+
+// ===================================================
+// TABUNGAN DIGITAL SISWA (WALI KELAS)
+// ===================================================
+let rawTabunganWk = [], filteredTabunganWk = [];
+let pageWkTabungan = 1;
+
+function loadTabunganWalikelas() {
+  const session = JSON.parse(localStorage.getItem('userSession')) || {};
+  const kelas = session.kelas;
+  const tbody = document.getElementById('tbody-wk-tabungan');
+  if (!tbody) return;
+  tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">⏳ Memuat data...</td></tr>';
+  
+  const labelKelas = document.getElementById('label-kelas-tabungan');
+  if (labelKelas) labelKelas.textContent = kelas;
+
+  Promise.all([
+    fetch(scriptURL + '?t=' + new Date().getTime() + '&action=getAccounts').then(r => r.json()),
+    fetch(scriptURL + '?t=' + new Date().getTime() + '&action=getTabungan').then(r => r.json())
+  ]).then(([resAkun, resTabungan]) => {
+    const listSiswa = (resAkun.status === 'success') ? resAkun.data.filter(a => String(a.role).toLowerCase() === 'siswa' && a.kelas === kelas) : [];
+    const listTbg = (resTabungan.status === 'success') ? resTabungan.data : [];
+
+    rawTabunganWk = [];
+    listSiswa.forEach(siswa => {
+      let tSetor = 0, tTarik = 0;
+      listTbg.forEach(trx => {
+        if (String(trx.nisn).trim() === String(siswa.idLogin).trim()) {
+          if (trx.jenis === 'Setor') tSetor += parseFloat(trx.nominal);
+          else if (trx.jenis === 'Tarik') tTarik += parseFloat(trx.nominal);
+        }
+      });
+      rawTabunganWk.push({
+        nisn: siswa.idLogin,
+        nama: siswa.nama,
+        setor: tSetor,
+        tarik: tTarik,
+        saldo: tSetor - tTarik
+      });
+    });
+    
+    // Sort by name
+    rawTabunganWk.sort((a,b) => a.nama.localeCompare(b.nama));
+    renderTabunganWalikelas();
+  }).catch(() => { tbody.innerHTML = '<tr><td colspan="5" class="empty-state">Gagal memuat data.</td></tr>'; });
+}
+
+function renderTabunganWalikelas(resetPage = true) {
+  if (resetPage === true) pageWkTabungan = 1;
+  const tbody = document.getElementById('tbody-wk-tabungan');
+  if (!tbody) return;
+  const q = (document.getElementById('search-wk-tabungan')?.value || '').toLowerCase().trim();
+
+  filteredTabunganWk = rawTabunganWk.filter(r => !q || [r.nama, r.nisn].some(v => String(v || '').toLowerCase().includes(q)));
+  
+  const start = (pageWkTabungan - 1) * PAGE_LIMIT;
+  const paginated = filteredTabunganWk.slice(start, start + PAGE_LIMIT);
+  const end = Math.min(start + PAGE_LIMIT, filteredTabunganWk.length);
+
+  document.getElementById('count-wk-tabungan').textContent = `Menampilkan ${filteredTabunganWk.length > 0 ? start + 1 : 0}-${end} dari ${filteredTabunganWk.length} siswa`;
+  renderPagination(filteredTabunganWk.length, PAGE_LIMIT, pageWkTabungan, 'pg-wk-tabungan', (p) => { pageWkTabungan = p; renderTabunganWalikelas(false); });
+
+  if (paginated.length > 0) {
+    tbody.innerHTML = paginated.map(r => `
+      <tr>
+        <td>${escapeHtml(r.nisn)}</td>
+        <td><strong>${escapeHtml(r.nama)}</strong></td>
+        <td style="color:green;">${formatRp(r.setor)}</td>
+        <td style="color:red;">${formatRp(r.tarik)}</td>
+        <td style="font-weight:bold; font-size: 15px;">${formatRp(r.saldo)}</td>
+      </tr>
+    `).join('');
+  } else {
+    tbody.innerHTML = '<tr><td colspan="5" class="empty-state">Tidak ada data yang cocok.</td></tr>';
+  }
+}
+
+// ===================================================
+// TABUNGAN DIGITAL SISWA (SISWA PORTAL)
+// ===================================================
+let rawTabunganSiswa = [], filteredTabunganSiswa = [];
+let pageSiswaTabungan = 1;
+
+function loadTabunganSiswa() {
+  const session = JSON.parse(localStorage.getItem('userSession')) || {};
+  const tbody = document.getElementById('tbody-siswa-tabungan');
+  if (!tbody) return;
+  tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">⏳ Memuat data...</td></tr>';
+  
+  const labelNama = document.getElementById('label-nama-tabungan');
+  if (labelNama) labelNama.textContent = session.nama;
+
+  Promise.all([
+    fetch(scriptURL + '?t=' + new Date().getTime() + '&action=getAccounts').then(r => r.json()),
+    fetch(scriptURL + '?t=' + new Date().getTime() + '&action=getTabungan').then(r => r.json())
+  ]).then(([resAkun, resTabungan]) => {
+    let siswaServer = null;
+    if (resAkun.status === 'success') {
+      siswaServer = resAkun.data.find(a => 
+        String(a.role).toLowerCase() === 'siswa' && 
+        (String(a.idLogin).trim() === String(session.idLogin).trim() || 
+         String(a.nama).trim().toLowerCase() === String(session.nama).trim().toLowerCase())
+      );
+    }
+    const nisnAktif = siswaServer ? siswaServer.idLogin : session.idLogin;
+
+    rawTabunganSiswa = (resTabungan.status === 'success') ? resTabungan.data.filter(t => String(t.nisn).trim() === String(nisnAktif).trim()) : [];
+    
+    let totalSaldo = 0;
+    rawTabunganSiswa.forEach(r => {
+      if (r.jenis === 'Setor') totalSaldo += parseFloat(r.nominal);
+      else if (r.jenis === 'Tarik') totalSaldo -= parseFloat(r.nominal);
+    });
+    const saldoElem = document.getElementById('siswa-saldo-tabungan');
+    if (saldoElem) saldoElem.textContent = formatRp(totalSaldo);
+
+    renderTabunganSiswa();
+  }).catch(() => { tbody.innerHTML = '<tr><td colspan="5" class="empty-state">Gagal memuat data.</td></tr>'; });
+}
+
+function renderTabunganSiswa(resetPage = true) {
+  if (resetPage === true) pageSiswaTabungan = 1;
+  const tbody = document.getElementById('tbody-siswa-tabungan');
+  if (!tbody) return;
+  const jenisFilter = document.getElementById('jenis-siswa-tabungan')?.value;
+
+  filteredTabunganSiswa = rawTabunganSiswa.filter(r => {
+    const matchesJenis = !jenisFilter || r.jenis === jenisFilter;
+    const matchesDate = inDateRange(r.tanggal, 'from-siswa-tabungan', 'to-siswa-tabungan');
+    return matchesJenis && matchesDate;
+  });
+
+  const start = (pageSiswaTabungan - 1) * PAGE_LIMIT;
+  const paginated = filteredTabunganSiswa.slice(start, start + PAGE_LIMIT);
+  const end = Math.min(start + PAGE_LIMIT, filteredTabunganSiswa.length);
+
+  document.getElementById('count-siswa-tabungan').textContent = `Menampilkan ${filteredTabunganSiswa.length > 0 ? start + 1 : 0}-${end} dari ${filteredTabunganSiswa.length} transaksi`;
+  renderPagination(filteredTabunganSiswa.length, PAGE_LIMIT, pageSiswaTabungan, 'pg-siswa-tabungan', (p) => { pageSiswaTabungan = p; renderTabunganSiswa(false); });
+
+  if (paginated.length > 0) {
+    tbody.innerHTML = paginated.map(r => {
+      let badge = r.jenis === 'Setor' ? '<span style="color:green;font-weight:bold;">Setor</span>' : '<span style="color:red;font-weight:bold;">Tarik</span>';
+      return `
+        <tr>
+          <td>${escapeHtml(r.tanggal)}</td>
+          <td>${badge}</td>
+          <td style="font-weight:bold;">${formatRp(r.nominal)}</td>
+          <td>${escapeHtml(r.keterangan || '-')}</td>
+          <td>${escapeHtml(r.admin) || '-'}</td>
+        </tr>
+      `;
+    }).join('');
+  } else {
+    tbody.innerHTML = '<tr><td colspan="5" class="empty-state">Tidak ada transaksi.</td></tr>';
   }
 }
