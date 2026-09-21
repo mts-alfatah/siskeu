@@ -454,7 +454,7 @@ function renderTransaksiSiswa(resetPage = true) {
         <td>
           <div class="row-actions">
             <button class="btn-icon btn-edit" onclick="editTransaksiSiswa(${r.sheetRow})">Ã¢Å“ÂÃ¯Â¸Â Edit</button>
-            <button class="btn-icon btn-delete" onclick="deleteTransaksiSiswa(${r.sheetRow})">Ã°Å¸â€”â€˜Ã¯Â¸Â Hapus</button>
+            <button class="btn-icon btn-delete" onclick="deleteTransaksiSiswa(${r.sheetRow})">🗑️ Hapus</button>
           </div>
         </td>
       </tr>
@@ -666,7 +666,7 @@ function renderTransaksiInternal(resetPage = true) {
           <td>
             <div class="row-actions">
               <button class="btn-icon btn-edit" onclick="editTransaksiInternal(${r.sheetRow})">Ã¢Å“ÂÃ¯Â¸Â Edit</button>
-              <button class="btn-icon btn-delete" onclick="deleteTransaksiInternal(${r.sheetRow})">Ã°Å¸â€”â€˜Ã¯Â¸Â Hapus</button>
+              <button class="btn-icon btn-delete" onclick="deleteTransaksiInternal(${r.sheetRow})">🗑️ Hapus</button>
             </div>
           </td>
         </tr>`;
@@ -731,7 +731,7 @@ function renderTarifPembayaran(resetPage = true) {
         <td>
           <div class="row-actions">
             <button class="btn-icon btn-edit" onclick="editTarifPembayaran(${r.sheetRow})">Ã¢Å“ÂÃ¯Â¸Â Edit</button>
-            <button class="btn-icon btn-delete" onclick="deleteTarifPembayaran(${r.sheetRow})">Ã°Å¸â€”â€˜Ã¯Â¸Â Hapus</button>
+            <button class="btn-icon btn-delete" onclick="deleteTarifPembayaran(${r.sheetRow})">🗑️ Hapus</button>
           </div>
         </td>
       </tr>`).join('');
@@ -801,7 +801,7 @@ function renderAkun(resetPage = true) {
         <td>
           <div class="row-actions">
             <button class="btn-icon btn-edit" onclick="editAkun(${r.sheetRow})">Ã¢Å“ÂÃ¯Â¸Â Edit</button>
-            <button class="btn-icon btn-delete" onclick="deleteAkun(${r.sheetRow})">Ã°Å¸â€”â€˜Ã¯Â¸Â Hapus</button>
+            <button class="btn-icon btn-delete" onclick="deleteAkun(${r.sheetRow})">🗑️ Hapus</button>
           </div>
         </td>
       </tr>`).join('');
@@ -2004,7 +2004,7 @@ function renderTabunganAdmin(resetPage = true) {
           <td>${escapeHtml(r.admin) || '-'}</td>
           <td>
             <div class="row-actions">
-              <button class="btn-icon btn-delete" onclick="deleteTabungan(${r.sheetRow})">Ã°Å¸â€”â€˜Ã¯Â¸Â Hapus</button>
+              <button class="btn-icon btn-delete" onclick="deleteTabungan(${r.sheetRow})">🗑️ Hapus</button>
             </div>
           </td>
         </tr>
@@ -2460,7 +2460,7 @@ function processJajanKoperasi() {
     .then(r => r.json())
     .then(res => {
       btn.disabled = false;
-      btn.textContent = 'ðŸ’° Bayar Transaksi';
+      btn.textContent = '💰 Bayar Transaksi';
       if (res.status === 'success') {
         resetScanner();
         loadRiwayatKoperasi();
@@ -2474,7 +2474,7 @@ function processJajanKoperasi() {
     })
     .catch(err => {
       btn.disabled = false;
-      btn.textContent = 'ðŸ’° Bayar Transaksi';
+      btn.textContent = '💰 Bayar Transaksi';
       alert('Error: ' + err.message);
     });
 }
