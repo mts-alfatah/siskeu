@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+&#xFEFF;<!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8">
@@ -20,22 +20,22 @@
 <body>
 
   <div class="sidebar">
-    <div class="sidebar-header">🏫 Portal Siswa</div>
+    <div class="sidebar-header">&#x1F3EB; Portal Siswa</div>
     <ul class="sidebar-menu">
       <div class="menu-label">Menu Saya</div>
-      <li class="nav-item-siswa active" data-target="tagihan-siswa"><a href="#">📋 Tagihan Saya</a></li>
-      <li class="nav-item-siswa" data-target="tabungan-saya"><a href="#">💰 Saldo Saya</a></li>
-      <li class="nav-item-siswa" data-target="riwayat-siswa"><a href="#">📊 Riwayat Pembayaran</a></li>
+      <li class="nav-item-siswa active" data-target="tagihan-siswa"><a href="#">&#x1F4CB; Tagihan Saya</a></li>
+      <li class="nav-item-siswa" data-target="tabungan-saya"><a href="#">&#x1F4B0; Saldo Saya</a></li>
+      <li class="nav-item-siswa" data-target="riwayat-siswa"><a href="#">&#x1F4CA; Riwayat Pembayaran</a></li>
     </ul>
     <div class="sidebar-footer">
-      <button class="btn-logout" onclick="logout()">🚪 Keluar</button>
+      <button class="btn-logout" onclick="logout()">&#x1F6AA; Keluar</button>
     </div>
   </div>
 
   <div class="main-content">
     <div class="header-top">
       <div style="display: flex; align-items: center; gap: 15px;">
-        <button id="menuToggleSiswa" class="btn-menu">☰</button>
+        <button id="menuToggleSiswa" class="btn-menu">&#x2630;</button>
         <h1 id="pageTitleSiswa">Tagihan Saya</h1>
       </div>
       <div>
@@ -50,7 +50,7 @@
       <h2>Data Tagihan Pembayaran - <span id="label-nama-tagihan" style="color:#0d6efd;"></span></h2>
       
       <div class="toolbar">
-        <input type="text" class="search-input" id="search-siswa-tagihan" placeholder="🔍 Cari jenis tagihan..." oninput="renderTagihanSiswa()">
+        <input type="text" class="search-input" id="search-siswa-tagihan" placeholder="&#x1F50D; Cari jenis tagihan..." oninput="renderTagihanSiswa()">
       </div>
 
       <div class="result-count" id="count-siswa-tagihan"></div>
@@ -133,7 +133,7 @@
           <h3>Riwayat Transaksi - <span id="label-nama-riwayat" style="color:#0d6efd;"></span></h3>
         </div>
         <div class="toolbar">
-          <input type="text" class="search-input" id="search-siswa-riwayat" placeholder="🔍 Cari nama tagihan..." oninput="renderRiwayatSiswa()">
+          <input type="text" class="search-input" id="search-siswa-riwayat" placeholder="&#x1F50D; Cari nama tagihan..." oninput="renderRiwayatSiswa()">
           <label style="font-size:13px; font-weight:600; margin:0;">Dari</label>
           <input type="date" class="date-input" id="from-siswa-riwayat" onchange="renderRiwayatSiswa()">
           <label style="font-size:13px; font-weight:600; margin:0;">Sampai</label>

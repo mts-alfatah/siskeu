@@ -1,4 +1,4 @@
-﻿// ===================================================
+\u{FEFF}// ===================================================
 // PWA SERVICE WORKER & INSTALL BANNER
 // ===================================================
 if ('serviceWorker' in navigator) {
@@ -383,7 +383,7 @@ function renderPagination(totalItems, limit, currentPage, containerId, onPageCha
   
   const btnPrev = document.createElement('button');
   btnPrev.className = 'btn-page';
-  btnPrev.textContent = 'Ã‚Â« Prev';
+  btnPrev.textContent = '\u{AB} Prev';
   btnPrev.disabled = currentPage === 1;
   btnPrev.onclick = () => onPageChange(currentPage - 1);
   container.appendChild(btnPrev);
@@ -404,7 +404,7 @@ function renderPagination(totalItems, limit, currentPage, containerId, onPageCha
 
   const btnNext = document.createElement('button');
   btnNext.className = 'btn-page';
-  btnNext.textContent = 'Next Ã‚Â»';
+  btnNext.textContent = 'Next \u{BB}';
   btnNext.disabled = currentPage === totalPages;
   btnNext.onclick = () => onPageChange(currentPage + 1);
   container.appendChild(btnNext);
@@ -416,7 +416,7 @@ function renderPagination(totalItems, limit, currentPage, containerId, onPageCha
 function loadTransaksiSiswa() {
   const tbody = document.getElementById('tbody-transaksi-siswa');
   if (!tbody) return;
-  tbody.innerHTML = '<tr><td colspan="7" style="text-align: center;">⏳ Memuat data...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="7" style="text-align: center;">\u{23F3} Memuat data...</td></tr>';
   fetch(scriptURL + '?t=' + new Date().getTime() + '&action=getTransaksiSiswa')
     .then(r => r.json())
     .then(res => { rawTs = (res.status === 'success') ? res.data : []; renderTransaksiSiswa(); })
@@ -453,8 +453,8 @@ function renderTransaksiSiswa(resetPage = true) {
         <td>${escapeHtml(r.admin) || '-'}</td>
         <td>
           <div class="row-actions">
-            <button class="btn-icon btn-edit" onclick="editTransaksiSiswa(${r.sheetRow})">Ã¢Å“ÂÃ¯Â¸Â Edit</button>
-            <button class="btn-icon btn-delete" onclick="deleteTransaksiSiswa(${r.sheetRow})">🗑️ Hapus</button>
+            <button class="btn-icon btn-edit" onclick="editTransaksiSiswa(${r.sheetRow})">\u{270F}\u{FE0F} Edit</button>
+            <button class="btn-icon btn-delete" onclick="deleteTransaksiSiswa(${r.sheetRow})">\u{1F5D1}\u{FE0F} Hapus</button>
           </div>
         </td>
       </tr>
@@ -625,7 +625,7 @@ function deleteTransaksiSiswa(sheetRow) {
 function loadTransaksiInternal() {
   const tbody = document.getElementById('tbody-transaksi-internal');
   if (!tbody) return;
-  tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">⏳ Memuat data...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">\u{23F3} Memuat data...</td></tr>';
   fetch(scriptURL + '?t=' + new Date().getTime() + '&action=getTransaksiInternal')
     .then(r => r.json())
     .then(res => { rawTi = (res.status === 'success') ? res.data : []; renderTransaksiInternal(); })
@@ -665,8 +665,8 @@ function renderTransaksiInternal(resetPage = true) {
           <td>${escapeHtml(r.admin) || '-'}</td>
           <td>
             <div class="row-actions">
-              <button class="btn-icon btn-edit" onclick="editTransaksiInternal(${r.sheetRow})">Ã¢Å“ÂÃ¯Â¸Â Edit</button>
-              <button class="btn-icon btn-delete" onclick="deleteTransaksiInternal(${r.sheetRow})">🗑️ Hapus</button>
+              <button class="btn-icon btn-edit" onclick="editTransaksiInternal(${r.sheetRow})">\u{270F}\u{FE0F} Edit</button>
+              <button class="btn-icon btn-delete" onclick="deleteTransaksiInternal(${r.sheetRow})">\u{1F5D1}\u{FE0F} Hapus</button>
             </div>
           </td>
         </tr>`;
@@ -701,7 +701,7 @@ function deleteTransaksiInternal(sheetRow) {
 function loadTarifPembayaran() {
   const tbody = document.getElementById('tbody-tarif-pembayaran');
   if (!tbody) return;
-  tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">⏳ Memuat data...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">\u{23F3} Memuat data...</td></tr>';
   fetch(scriptURL + '?t=' + new Date().getTime() + '&action=getTarifPembayaran')
     .then(r => r.json())
     .then(res => { rawTp = (res.status === 'success') ? res.data : []; renderTarifPembayaran(); })
@@ -730,8 +730,8 @@ function renderTarifPembayaran(resetPage = true) {
         <td style="font-weight:bold;">${formatRp(r.nominalTarif)}</td>
         <td>
           <div class="row-actions">
-            <button class="btn-icon btn-edit" onclick="editTarifPembayaran(${r.sheetRow})">Ã¢Å“ÂÃ¯Â¸Â Edit</button>
-            <button class="btn-icon btn-delete" onclick="deleteTarifPembayaran(${r.sheetRow})">🗑️ Hapus</button>
+            <button class="btn-icon btn-edit" onclick="editTarifPembayaran(${r.sheetRow})">\u{270F}\u{FE0F} Edit</button>
+            <button class="btn-icon btn-delete" onclick="deleteTarifPembayaran(${r.sheetRow})">\u{1F5D1}\u{FE0F} Hapus</button>
           </div>
         </td>
       </tr>`).join('');
@@ -765,7 +765,7 @@ function deleteTarifPembayaran(sheetRow) {
 function loadAkun() {
   const tbody = document.getElementById('tbody-akun');
   if (!tbody) return;
-  tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">⏳ Memuat data...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">\u{23F3} Memuat data...</td></tr>';
   fetch(scriptURL + '?t=' + new Date().getTime() + '&action=getAccounts')
     .then(r => r.json())
     .then(res => { rawAkun = (res.status === 'success') ? res.data : []; renderAkun(); })
@@ -800,8 +800,8 @@ function renderAkun(resetPage = true) {
         <td>${escapeHtml(r.kelas) || '-'}</td>
         <td>
           <div class="row-actions">
-            <button class="btn-icon btn-edit" onclick="editAkun(${r.sheetRow})">Ã¢Å“ÂÃ¯Â¸Â Edit</button>
-            <button class="btn-icon btn-delete" onclick="deleteAkun(${r.sheetRow})">🗑️ Hapus</button>
+            <button class="btn-icon btn-edit" onclick="editAkun(${r.sheetRow})">\u{270F}\u{FE0F} Edit</button>
+            <button class="btn-icon btn-delete" onclick="deleteAkun(${r.sheetRow})">\u{1F5D1}\u{FE0F} Hapus</button>
           </div>
         </td>
       </tr>`).join('');
@@ -1582,7 +1582,7 @@ function loadTagihanWalikelas() {
   const kelas = session.kelas;
   const tbody = document.getElementById('tbody-wk-tagihan');
   if (!tbody) return;
-  tbody.innerHTML = '<tr><td colspan="7" style="text-align: center;">⏳ Memuat data...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="7" style="text-align: center;">\u{23F3} Memuat data...</td></tr>';
 
   Promise.all([
     fetch(scriptURL + '?t=' + new Date().getTime() + '&action=getAccounts').then(r => r.json()),
@@ -1675,7 +1675,7 @@ function loadLaporanWalikelas() {
   const kelas = session.kelas;
   const tbody = document.getElementById('tbody-wk-laporan');
   if (!tbody) return;
-  tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">⏳ Memuat data...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">\u{23F3} Memuat data...</td></tr>';
 
   fetch(scriptURL + '?t=' + new Date().getTime() + '&action=getTransaksiSiswa')
     .then(r => r.json())
@@ -1764,7 +1764,7 @@ function loadTagihanSiswa() {
   const session = JSON.parse(localStorage.getItem('userSession')) || {};
   const tbody = document.getElementById('tbody-siswa-tagihan');
   if (!tbody) return;
-  tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">⏳ Memuat data...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">\u{23F3} Memuat data...</td></tr>';
 
   Promise.all([
     fetch(scriptURL + '?t=' + new Date().getTime() + '&action=getAccounts').then(r => r.json()),
@@ -1860,7 +1860,7 @@ function loadRiwayatSiswa() {
   const session = JSON.parse(localStorage.getItem('userSession')) || {};
   const tbody = document.getElementById('tbody-siswa-riwayat');
   if (!tbody) return;
-  tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">⏳ Memuat data...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">\u{23F3} Memuat data...</td></tr>';
 
   Promise.all([
     fetch(scriptURL + '?t=' + new Date().getTime() + '&action=getAccounts').then(r => r.json()),
@@ -1951,7 +1951,7 @@ let pageTabungan = 1;
 function loadTabunganAdmin() {
   const tbody = document.getElementById('tbody-tabungan-siswa');
   if (!tbody) return;
-  tbody.innerHTML = '<tr><td colspan="8" style="text-align: center;">⏳ Memuat data...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="8" style="text-align: center;">\u{23F3} Memuat data...</td></tr>';
   fetch(scriptURL + '?t=' + new Date().getTime() + '&action=getTabungan')
     .then(r => r.json())
     .then(res => { 
@@ -2004,7 +2004,7 @@ function renderTabunganAdmin(resetPage = true) {
           <td>${escapeHtml(r.admin) || '-'}</td>
           <td>
             <div class="row-actions">
-              <button class="btn-icon btn-delete" onclick="deleteTabungan(${r.sheetRow})">🗑️ Hapus</button>
+              <button class="btn-icon btn-delete" onclick="deleteTabungan(${r.sheetRow})">\u{1F5D1}\u{FE0F} Hapus</button>
             </div>
           </td>
         </tr>
@@ -2129,7 +2129,7 @@ function loadTabunganWalikelas() {
   const kelas = session.kelas;
   const tbody = document.getElementById('tbody-wk-tabungan');
   if (!tbody) return;
-  tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">⏳ Memuat data...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">\u{23F3} Memuat data...</td></tr>';
   
   const labelKelas = document.getElementById('label-kelas-tabungan');
   if (labelKelas) labelKelas.textContent = kelas;
@@ -2205,7 +2205,7 @@ function loadTabunganSiswa() {
   const session = JSON.parse(localStorage.getItem('userSession')) || {};
   const tbody = document.getElementById('tbody-siswa-tabungan');
   if (!tbody) return;
-  tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">⏳ Memuat data...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">\u{23F3} Memuat data...</td></tr>';
   
   const labelNama = document.getElementById('label-nama-tabungan');
   if (labelNama) labelNama.textContent = session.nama;
@@ -2460,7 +2460,7 @@ function processJajanKoperasi() {
     .then(r => r.json())
     .then(res => {
       btn.disabled = false;
-      btn.textContent = '💰 Bayar Transaksi';
+      btn.textContent = '\u{1F4B0} Bayar Transaksi';
       if (res.status === 'success') {
         resetScanner();
         loadRiwayatKoperasi();
@@ -2474,7 +2474,7 @@ function processJajanKoperasi() {
     })
     .catch(err => {
       btn.disabled = false;
-      btn.textContent = '💰 Bayar Transaksi';
+      btn.textContent = '\u{1F4B0} Bayar Transaksi';
       alert('Error: ' + err.message);
     });
 }
@@ -2482,7 +2482,7 @@ function processJajanKoperasi() {
 function loadRiwayatKoperasi() {
   const tbody = document.getElementById('tbody-koperasi-riwayat');
   if (!tbody) return;
-  tbody.innerHTML = '<tr><td colspan="3" style="text-align: center;">â³ Memuat riwayat...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="3" style="text-align: center;">\u{23F3} Memuat riwayat...</td></tr>';
   
   const session = JSON.parse(localStorage.getItem('userSession'));
   
