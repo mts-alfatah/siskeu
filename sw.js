@@ -1,4 +1,4 @@
-const CACHE_NAME = 'siskeu-cache-v6';
+const CACHE_NAME = 'siskeu-cache-v7';
 const urlsToCache = [
   './',
   './index.html',
